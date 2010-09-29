@@ -1,0 +1,56 @@
+## U.S. population data
+## (estimate of 2009 from http://en.wikipedia.org/wiki/List_of_U.S._States_by_population,
+## retrieved 29 September 2010 19:04 UTC, Page Version ID: 383596724)
+state	population
+Alabama	4708708
+Alaska	698473
+Arizona	6595778
+Arkansas	2889450
+California	36961664
+Colorado	5024748
+Connecticut	3518288
+Delaware	885122
+District of Columbia	599657
+Florida	18537969
+Georgia	9829211
+Hawaii	1295178
+Idaho	1545801
+Illinois	12910409
+Indiana	6423113
+Iowa	3007856
+Kansas	2818747
+Kentucky	4314113
+Louisiana	4492076
+Maine	1318301
+Maryland	5699478
+Massachusetts	6593587
+Michigan	9969727
+Minnesota	5266214
+Mississippi	2951996
+Missouri	5987580
+Montana	974989
+Nebraska	1796619
+Nevada	2643085
+New Hampshire	1324575
+New Jersey	8707739
+New Mexico	2009671
+New York	19541453
+North Carolina	9380884
+North Dakota	646844
+Ohio	11542645
+Oklahoma	3687050
+Oregon	3825657
+Pennsylvania	12604767
+Rhode Island	1053209
+South Carolina	4561242
+South Dakota	812383
+Tennessee	6296254
+Texas	24782302
+U.S. Average	6019736
+Utah	2784572
+Vermont	621760
+Virginia	7882590
+Washington	6664195
+West Virginia	1819777
+Wisconsin	5654774
+Wyoming	544270
