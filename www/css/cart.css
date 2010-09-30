@@ -1,0 +1,43 @@
+html {
+  margin: 2em;
+}
+
+body {
+  width: 1060px;
+  margin: 0 auto;
+}
+
+#nav {
+  float: left;
+  width: 210px;
+  text-align: center;
+}
+
+#nav ul li {
+  list-style-type: none;
+  text-align: center;
+}
+
+#content {
+  float: right;
+  width: 800px;
+  padding-left: 50px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+code {
+  font-size: 1.2em;
+}
+
+a {
+  text-decoration: none;
+  color: #8597bc;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}

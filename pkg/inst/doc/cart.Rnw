@@ -1,0 +1,23 @@
+\documentclass{article}
+
+\VignetteIndexEntry{Introduction to cart}
+
+\usepackage{graphicx}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{color}
+\usepackage{Sweave}
+
+\title{Introduction to {\tt cart}: diffusion-based density-equalising maps or
+  ``cartograms''}
+\author{Thomas Zumbrunn\footnote{University of Basel, Institute of Botany,
+    Schönbeinstrasse 6, 4056 Basel, Switzerland {\tt thomas@zumbrunn.name}}}
+
+\begin{document}
+
+
+\section{Introduction}
+
+
+
+
+\end{document}

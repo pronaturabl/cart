@@ -6,8 +6,8 @@ Date: 2010-09-30
 Author: Thomas Zumbrunn <thomas@zumbrunn.name>
 Maintainer: Thomas Zumbrunn <thomas@zumbrunn.name>
 Description: Produce density-equalising maps or "cartograms" based on the
-    diffusion-based method by Michael T. Gastner and M. E. J. Newman and an
-    implementation by M. E. J. Newman
+    diffusion-based method by Michael T. Gastner and Mark E. J. Newman and an
+    implementation by Mark E. J. Newman
     (http://people.cas.sc.edu/hardistf/cartograms/).
 Depends: maps, maptools, sp
 Suggests: mapdata
