@@ -1,7 +1,10 @@
+2010-09-30  Thomas Zumbrunn <thomas@zumbrunn.name>
+
+	* [r5] function 'cartogram' working
+	       working example for 'cartogram'
+	       using roxygen for documentation
+	* [r4] prototype of function 'cartogram'
+
 2010-09-29  Thomas Zumbrunn <thomas@zumbrunn.name>
 
 	* [r2] package cart: initial layout
-
-2010-09-30  Thomas Zumbrunn <thomas@zumbrunn.name>
-
-	* [r3] prototype of function 'cartogram'

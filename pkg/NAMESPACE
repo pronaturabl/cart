@@ -1,1 +1,2 @@
-useDynLib(cart, .registration=TRUE)
+useDynLib(cart)
+export(cartogram)

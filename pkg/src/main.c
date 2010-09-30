@@ -81,7 +81,7 @@ void writepoints(FILE *stream, double *gridx, double *gridy, int npoints)
 }
 
 
-main(int argc, char *argv[])
+void main(int argc, char *argv[])
 {
   int xsize,ysize;
   double *gridx,*gridy;  // Array for grid points

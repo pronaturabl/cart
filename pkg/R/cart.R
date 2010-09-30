@@ -1,24 +1,31 @@
 
 
-### Copyright (C) 2001 Thomas Zumbrunn <thomas@zumbrunn.name>
-###
-### This file is part of the cart package for R.
-### It is made available under the terms of the GNU General Public
-### License, version 3, or at your option, any later version,
-### incorporated herein by reference.
-###
-### This program is distributed in the hope that it will be
-### useful, but WITHOUT ANY WARRANTY; without even the implied
-### warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-### PURPOSE.  See the GNU General Public License for more
-### details.
-###
-### You should have received a copy of the GNU General Public
-### License along with this program; if not, write to the Free
-### Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-### MA 02110-1301, USA
-
-
+##' Creates a cartogram.
+##'
+##' This function creates a cartogram from a
+##' \code{\link[sp]{SpatialPolygonsDataFrame}} object using
+##' the indicated data.frame variable.
+##'
+##' @author Thomas Zumbrunn \email{thomas@@zumbrunn.name}
+##' @param spdf \code{\link[sp]{SpatialPolygonsDataFrame}} object for which
+##' to create a cartogram
+##' @param variable numeric or character indicating the data.frame column in
+##' 'spdf' which to use for the density calculations
+##' @return SpatialPolygonsDataFrame object
+##' @references Gastner MT, Newman MEJ (2004) Diffusion-based method for
+##' producing density equalizing maps. Proc. Natl. Acad. Sci. 101:7499-7504
+##' @useDynLib cart
+##' @export cartogram
+##' @callGraph
+##' @examples
+##' data(uspop)
+##' usmap <- map("state",
+##'               fill = TRUE, plot = FALSE)
+##' sp <- map2SpatialPolygons(usmap, sub(":.*", "", usmap$names))
+##' rownames(uspop) <- tolower(rownames(uspop))
+##' spdf <- SpatialPolygonsDataFrame(sp, uspop, match.ID = TRUE)
+##' cart <- cartogram(spdf, "population")
+##' plot(cart, axes = TRUE, asp = 1/2, col = "#147f14")
 
 cartogram <- function(spdf,
                       variable = 1) {
@@ -33,12 +40,11 @@ cartogram <- function(spdf,
   
   ## variable
   ## - must have length 1
-  if (length(variable) != 1) {
+  if (length(variable) != 1)
     stop("argument 'variable' must have length 1")
   ## - must be of type numeric or character
-  } else if (!(is.numeric(variable) | is.character(variable))) {
+  if (!(is.numeric(variable) | is.character(variable)))
     stop("argument 'variable' must be of type 'numeric' or 'character'")
-  }
   ## - must refer to a column in spdf
   check <- try(!spdf@data[, variable], silent = TRUE)
   if (class(check) == "try-error")
@@ -102,7 +108,8 @@ cartogram <- function(spdf,
        dim[1],
        dim[2],
        tmpDens,
-       tmpCoord))
+       tmpCoord),
+     PACKAGE = "cart")
 
   ## remove the first temporary file
   file.remove(tmpDens)
@@ -123,10 +130,9 @@ cartogram <- function(spdf,
                          shift[2] / grid@grid@cellsize[2] + (coords[, 2] - bb[2, 1]) / diff(bb[2, ]) * diff(bb[2, ]) / grid@grid@cellsize[2]),
                        byrow = FALSE, ncol = 2)
       ## interpolate
-      coordsTr <- interpolate(coords[, 1], coords[, 2],
+      coordsTr <- interpolate(coords,
                               matrix(coordsGrid[, 1], byrow = FALSE, ncol = dim[1] + 1),
-                              matrix(coordsGrid[, 2], byrow = FALSE, ncol = dim[2] + 1),
-                              dim[1], dim[2])
+                              matrix(coordsGrid[, 2], byrow = FALSE, ncol = dim[2] + 1))
       PolygonList[[j]] <- Polygon(coordsTr, hole = FALSE)
     }
     ID <- spdf@polygons[[i]]@ID
@@ -147,12 +153,33 @@ cartogram <- function(spdf,
 
 
 
-interpolate <- function(x, y, xgrid, ygrid, xsize, ysize) {
+##' Performs bilinear interpolation.
+##'
+##' This function performs bilinear interpolation of pairs of x/y
+##' coordinates based on a matrix of x gridcoordinates and a matrix of y
+##' grid coordinates. The algorithm is based on C code by Mark Newman.
+##'
+##' @author Thomas Zumbrunn \email{thomas@@zumbrunn.name}
+##' @param xy numeric matrix of x and y coordinate pairs to be transformed
+##' @param xgrid numeric matrix of x grid coordinates
+##' @param ygrid numeric matrix of y grid coordinates
+##' @return matrix of x/y transformed coordinates
+
+
+interpolate <- function(xy, xgrid, ygrid) {
 
   ## adapted from Mark Newman's code in interp.c
 
   ## TODO: check input
   ## TODO: vectorise
+
+  ## x/y vectors
+  x <- xy[, 1]
+  y <- xy[, 2]
+  
+  ## range
+  xsize <- max(xgrid)
+  ysize <- max(ygrid)
 
   ## loop over input
   mat <- apply(cbind(x, y), 1, function(arg) {
