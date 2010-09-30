@@ -1,4 +1,7 @@
 2010-09-29  Thomas Zumbrunn <thomas@zumbrunn.name>
 
-	* package cart: initial layout
+	* [r2] package cart: initial layout
 
+2010-09-30  Thomas Zumbrunn <thomas@zumbrunn.name>
+
+	* [r3] prototype of function 'cartogram'

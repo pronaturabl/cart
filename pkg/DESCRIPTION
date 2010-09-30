@@ -11,6 +11,7 @@ Description: Produce density-equalising maps or "cartograms" based on the
 	     (http://people.cas.sc.edu/hardistf/cartograms/).
 Depends: maps, sp
 Suggests: mapdata
+SystemRequirements: fftw
 License: GPL (>= 3)
 URL: http://cart.r-forge.r-project.org/
 LazyLoad: yes
