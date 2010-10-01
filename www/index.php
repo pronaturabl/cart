@@ -28,7 +28,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	The <a href="http://r-project.org/">R</a> package <code>cart</code> can be used to produce density-equalising maps or so-called &quot;cartograms&quot; based on the diffusion-based method by Michael T. Gastner and Mark E. J. Newman. The package makes use of an <a href="http://www-personal.umich.edu/~mejn/cart/">implementation in C       by Mark E. J. Newman</a>.
       </p>
       <p>
-	The following figure is a cartogram that shows <a href="http://en.wikipedia.org/wiki/List_of_U.S._States_by_population">U.S. population estimates for the year 2009</a> similar to the one <a href="http://www-personal.umich.edu/~mejn/cart/doc/">here</a>.
+	The following figure shows a map of the U.S. and a cartogram of  <a href="http://en.wikipedia.org/wiki/List_of_U.S._States_by_population">population estimates for the year 2009</a> similar to the one <a href="http://www-personal.umich.edu/~mejn/cart/doc/">here</a>.
       </p>
       <!--
 	  R code to produce the following figure:
