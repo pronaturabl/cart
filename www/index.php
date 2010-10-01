@@ -34,12 +34,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	  R code to produce the following figure:
 	  library(cart)
 	  example(cartogram)
-	  png(file = "../www/img/cartogram.png", width = 800, height = 500)
+	  png(file = "../www/img/cartogram.png", width = 800, height = 750)
+	  par(mar = c(0, 0, 0, 0), mai = c(0, 0, 0, 0), mfrow = c(2, 1))
+	  plot(sp, col = "#8597bc")
 	  plot(cart, asp = 1/2, col = "#8597bc")
 	  dev.off()
       -->
       <p style="text-align: center">
-	<img src="img/cartogram.png" width="800" height="500"
+	<img src="img/cartogram.png" width="800" height="750"
 	     alt="cartogram of U.S. population estimate by state"/>
       </p>
     </div>
