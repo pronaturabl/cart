@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # roxygenize
-R CMD roxygen pkg
+R CMD roxygen -d pkg
 
 # check
 R CMD check pkg

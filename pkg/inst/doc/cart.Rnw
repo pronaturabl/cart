@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\VignetteIndexEntry{Introduction to cart}
+% \VignetteIndexEntry{Introduction to cart}
 
 \usepackage{graphicx}
 \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
