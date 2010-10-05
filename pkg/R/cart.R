@@ -91,8 +91,8 @@ cartogram <- function(spdf,
   ## calculate the cartogram coordinates
 
   ## create two temporary files
-  tmpDens <- "tmpDens.tmp"#tempfile("cart")
-  tmpCoord <- "tmpCoord.tmp"#tempfile("cart")
+  tmpDens <- tempfile("cart")
+  tmpCoord <- tempfile("cart")
 
   ## write the density matrix to the temporary file
   ## (use the format expected by the standalone cart application, which
@@ -171,7 +171,6 @@ interpolate <- function(xy, xgrid, ygrid) {
   ## adapted from Mark Newman's code in interp.c
 
   ## TODO: check input
-  ## TODO: vectorise
 
   ## x/y vectors
   x <- xy[, 1]
@@ -181,27 +180,26 @@ interpolate <- function(xy, xgrid, ygrid) {
   xsize <- max(xgrid)
   ysize <- max(ygrid)
 
-  ## loop over input
-  mat <- apply(cbind(x, y), 1, function(arg) {
-    x <- arg[1]
-    y <- arg[2]
-    ## if points are outside the grid, return them untransformed
-    if (x < 0 | x >= xsize | y < 0 | y > ysize) {
-      return(c(x, y))
-    ## else interpolate
-    } else {
-      ix <- round(x)
-      dx <- x - ix
-      iy <- round(y)
-      dy <- y - iy;
-      return(c((1 - dx) * (1 - dy) * xgrid[ix, iy] + dx * (1 - dy) * xgrid[ix + 1, iy] +
-               (1 - dx) * dy * xgrid[ix, iy + 1] + dx * dy * xgrid[ix + 1, iy + 1],
-               (1 - dx) * (1 - dy) * ygrid[ix, iy] + dx * (1 - dy) * ygrid[ix + 1, iy] +
-               (1 - dx) * dy * ygrid[ix, iy + 1] + dx * dy * ygrid[ix + 1, iy + 1]))
-    }
-  })
+  ## indices
+  ix <- round(x)
+  iy <- round(y)
+
+  ## rounding differences
+  dx <- x - ix
+  dy <- y - iy
+
+  ## bilinear interpolation
+  mat <- cbind((1 - dx) * (1 - dy) * xgrid[cbind(ix, iy)] + dx * (1 - dy) * xgrid[cbind(ix + 1, iy)] +
+               (1 - dx) * dy * xgrid[cbind(ix, iy + 1)] + dx * dy * xgrid[cbind(ix + 1, iy + 1)],
+               (1 - dx) * (1 - dy) * ygrid[cbind(ix, iy)] + dx * (1 - dy) * ygrid[cbind(ix + 1, iy)] +
+               (1 - dx) * dy * ygrid[cbind(ix, iy + 1)] + dx * dy * ygrid[cbind(ix + 1, iy + 1)])
+
+  ## if points are outside the grid, return them untransformed
+  untransformed <- which(x < 0 | x >= xsize | y < 0 | y > ysize)
+  if (length(untransformed) > 0)
+    mat[untransformed, ] <- c(x, y)[untransformed, ]
 
   ## return the matrix
-  return(t(mat))
+  return(mat)
   
 }
