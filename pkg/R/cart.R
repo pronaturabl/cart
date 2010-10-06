@@ -18,12 +18,12 @@
 ##' @export cartogram
 ##' @callGraph
 ##' @examples
-##' data(uspop)
+##' data(usapop)
 ##' usmap <- map("state",
 ##'               fill = TRUE, plot = FALSE)
 ##' sp <- map2SpatialPolygons(usmap, sub(":.*", "", usmap$names))
-##' rownames(uspop) <- tolower(rownames(uspop))
-##' spdf <- SpatialPolygonsDataFrame(sp, uspop, match.ID = TRUE)
+##' rownames(usapop) <- tolower(rownames(usapop))
+##' spdf <- SpatialPolygonsDataFrame(sp, usapop, match.ID = TRUE)
 ##' cart <- cartogram(spdf, "population")
 ##' plot(cart, axes = TRUE, asp = 1/2, col = "#147f14")
 
