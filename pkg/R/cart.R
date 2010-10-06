@@ -164,6 +164,7 @@ cartogram <- function(spdf,
 ##' @param xgrid numeric matrix of x grid coordinates
 ##' @param ygrid numeric matrix of y grid coordinates
 ##' @return matrix of x/y transformed coordinates
+##' @nord
 
 
 interpolate <- function(xy, xgrid, ygrid) {
