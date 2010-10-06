@@ -1,2 +1,2 @@
-PKG_CFLAGS=-I"${PG_HOME}"/include
+PKG_CPPFLAGS=-I"${PG_HOME}"/include
 PKG_LIBS=-L"${PG_HOME}"/lib -lfftw3
