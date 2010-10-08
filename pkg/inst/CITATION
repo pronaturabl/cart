@@ -1,0 +1,16 @@
+citHeader("To cite package 'cart' in publications use:")
+
+desc <- packageDescription("cart")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
+vers <- paste("R package version", desc$Version)
+
+citEntry(entry="Manual",
+         title = "cart: Diffusion-based cartograms",
+         author = personList(as.person("Thomas Zumbrunn")),
+         year = year,
+         note = vers,
+         textVersion =
+         paste("Thomas Zumbrunn (",
+               year,
+               "). cart: Diffusion-based cartograms",
+               vers, ".", sep=""))
