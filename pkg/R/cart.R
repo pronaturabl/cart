@@ -224,3 +224,4 @@ interpolate <- function(xy, xgrid, ygrid) {
 ##' data(usapop)
 ##' str(usapop)
 ##' @keywords data
+NULL
