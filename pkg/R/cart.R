@@ -29,9 +29,9 @@
 ##' @TODO 256x256 grid points seem to be too few (crashes cart, why?) 
 
 cartogram <- function(spdf,
-                      variable = 1) {
+                       variable = 1) {
 
-  
+
   ## check arguments
   
   ## spdf
