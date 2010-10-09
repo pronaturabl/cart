@@ -26,6 +26,7 @@
 ##' spdf <- SpatialPolygonsDataFrame(sp, usapop, match.ID = TRUE)
 ##' cart <- cartogram(spdf, "population")
 ##' plot(cart, axes = TRUE, asp = 1/2, col = "#147f14")
+##' @TODO 256x256 grid points seem to be too few (crashes cart, why?) 
 
 cartogram <- function(spdf,
                       variable = 1) {
@@ -55,13 +56,13 @@ cartogram <- function(spdf,
 
   ## The algorithm by Newman works best if there is a generous "sea" around
   ## the "land", thus By default, add 50% of the x/y ranges to each side and
-  ## define a grid of 1024x1024 points. Because the C code of Mark Newman uses
-  ## FFTW, the number of grid points should be a powers of two in order for FFTW
+  ## define a grid of 512x512 points. Because the C code of Mark Newman uses
+  ## FFTW, the number of grid points should be a power of two in order for FFTW
   ## to work faster.
   bb <- bbox(spdf)
   range <- diff(t(bbox(spdf)))
   shift <- 0.5 * range
-  dim <- c(2^10, 2^10)
+  dim <- c(2^9, 2^9)
   grid <- SpatialGrid(GridTopology(cellcentre.offset = as.numeric(bb[, "min"] - shift),
                                    cellsize = as.numeric(diff(t(bb + t(rbind(-shift, shift)))) / (dim - 1)),
                                    cells.dim = dim))

@@ -1,6 +1,3 @@
-## U.S. population data
-## (estimate of 2009 from http://en.wikipedia.org/wiki/List_of_U.S._States_by_population,
-## retrieved 29 September 2010 19:04 UTC, Page Version ID: 383596724)
 state	population
 Alabama	4708708
 Alaska	698473

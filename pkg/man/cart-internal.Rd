@@ -2,7 +2,7 @@
 
 %% Documentation should not be exported for the following functions:
 %% <LIST>
-\alias{interpolate}
+%% \alias{interpolate}
 %% </LIST>
 
 \title{Internal cart functions}
