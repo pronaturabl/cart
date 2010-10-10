@@ -21,8 +21,7 @@
 ##' @callGraph
 ##' @examples
 ##' data(usapop)
-##' usmap <- map("state",
-##'               fill = TRUE, plot = FALSE)
+##' usmap <- map("state", fill = TRUE, plot = FALSE)
 ##' sp <- map2SpatialPolygons(usmap, sub(":.*", "", usmap$names))
 ##' rownames(usapop) <- tolower(rownames(usapop))
 ##' spdf <- SpatialPolygonsDataFrame(sp, usapop, match.ID = TRUE)
@@ -31,8 +30,8 @@
 
 cartogram <- function(spdf,
                       variable = 1,
-                      nrows = 2^7,
-                      ncols = 2^7) {
+                      nrows = 2^8,
+                      ncols = 2^8) {
 
 
   ## check arguments
@@ -68,9 +67,9 @@ cartogram <- function(spdf,
   if (!ncols > 0)
     stop("argument 'ncols' must be greater than 0")
   ## - should be power of 2, otherwise FFTW is slow
-  if (!all.equal(log(nrows, 2) - floor(log(nrows, 2))))
+  if (!isTRUE(all.equal(log(nrows, 2), floor(log(nrows, 2)))))
     warning("argument 'nrows' should be a power of 2 for faster calculation")
-  if (!all.equal(log(ncols, 2) - floor(log(ncols, 2))))
+  if (!isTRUE(all.equal(log(ncols, 2), floor(log(ncols, 2)))))
     warning("argument 'nrows' should be a power of 2 for faster calculation")  
 
   
@@ -101,10 +100,14 @@ cartogram <- function(spdf,
 
   ## For each grid cell, we need to determine the fraction of the units of
   ## "variable" as the number of units per cell. For NAs, i.e. for the "sea",
-  ## insert the mean value for the whole "land" mass.
-  tab <- xtabs(~ ind)
+  ## insert the mean value for the whole "land" mass. For the tabulation, the
+  ## levels need to be enforced because there might be polygons with count zero.
+  ## For these cells, division by zero is corrected by replacing the resulting
+  ## infinite result by zero.
+  tab <- xtabs(~ factor(ind, levels = seq(along = spdf@polygons)))
   var <- spdf@data[, variable]
   indVar <- var[as.numeric(names(tab))] / tab
+  indVar[is.infinite(indVar)] <- 0
   mean <- sum(tab * indVar[as.numeric(names(tab))]) / sum(tab)
   ind[is.na(ind)] <- length(var) + 1
   indVar[length(var) + 1] <- mean
@@ -127,8 +130,8 @@ cartogram <- function(spdf,
   invisible(.C("main",
                as.integer(5),
                c("cart",
-                 dim[1],
-                 dim[2],
+                 dim["x"],
+                 dim["y"],
                  tmpDens,
                  tmpCoord),
                PACKAGE = "cart"))
