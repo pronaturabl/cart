@@ -11,6 +11,8 @@
 ##' to create a cartogram
 ##' @param variable numeric or character indicating the data.frame column in
 ##' 'spdf' which to use for the density calculations
+##' @param nrows numeric, number of rows of the sampling grid
+##' @param ncols numeric, number of columns of the sampling grid
 ##' @return SpatialPolygonsDataFrame object
 ##' @references Gastner MT, Newman MEJ (2004) Diffusion-based method for
 ##' producing density equalizing maps. Proc. Natl. Acad. Sci. 101:7499-7504
@@ -26,10 +28,11 @@
 ##' spdf <- SpatialPolygonsDataFrame(sp, usapop, match.ID = TRUE)
 ##' cart <- cartogram(spdf, "population")
 ##' plot(cart, axes = TRUE, asp = 1/2, col = "#147f14")
-##' @TODO 256x256 grid points seem to be too few (crashes cart, why?) 
 
 cartogram <- function(spdf,
-                       variable = 1) {
+                      variable = 1,
+                      nrows = 2^7,
+                      ncols = 2^7) {
 
 
   ## check arguments
@@ -51,6 +54,25 @@ cartogram <- function(spdf,
   if (class(check) == "try-error")
     stop("argument 'variable' is not a valid data.frame column of argument 'spdf'")
 
+  ## nrows, ncols
+  ## - must be coercable to type integer
+  nrows <- as.integer(nrows)
+  ncols <- as.integer(ncols)
+  if (!is.integer(nrows))
+    stop("argument 'nrows' must be of type 'numeric' and coercable to type 'integer'")
+  if (!is.integer(ncols))
+    stop("argument 'ncols' must be of type 'numeric' and coercable to type 'integer'")
+  ## - must be > 0
+  if (!nrows > 0)
+    stop("argument 'nrows' must be greater than 0")
+  if (!ncols > 0)
+    stop("argument 'ncols' must be greater than 0")
+  ## - should be power of 2, otherwise FFTW is slow
+  if (!all.equal(log(nrows, 2) - floor(log(nrows, 2))))
+    warning("argument 'nrows' should be a power of 2 for faster calculation")
+  if (!all.equal(log(ncols, 2) - floor(log(ncols, 2))))
+    warning("argument 'nrows' should be a power of 2 for faster calculation")  
+
   
   ## create a grid
 
@@ -62,12 +84,12 @@ cartogram <- function(spdf,
   bb <- bbox(spdf)
   range <- diff(t(bbox(spdf)))
   shift <- 0.5 * range
-  dim <- c(2^9, 2^9)
+  dim <- c(x = ncols, y = nrows)
   grid <- SpatialGrid(GridTopology(cellcentre.offset = as.numeric(bb[, "min"] - shift),
                                    cellsize = as.numeric(diff(t(bb + t(rbind(-shift, shift)))) / (dim - 1)),
                                    cells.dim = dim))
 
-
+  
   ## overlay grid and polygons
 
   ## This is an extension of the point-in-polygon problem. We obtain a vector of
@@ -86,8 +108,7 @@ cartogram <- function(spdf,
   mean <- sum(tab * indVar[as.numeric(names(tab))]) / sum(tab)
   ind[is.na(ind)] <- length(var) + 1
   indVar[length(var) + 1] <- mean
-  dens <- matrix(indVar[ind], byrow = TRUE, ncol = dim[1])
-
+  dens <- matrix(indVar[ind], byrow = TRUE, ncol = dim["x"])
   
   ## calculate the cartogram coordinates
 
@@ -103,14 +124,14 @@ cartogram <- function(spdf,
               row.names = FALSE, col.names = FALSE)
 
   ## call the cart application
-  .C("main",
-     as.integer(5),
-     c("cart",
-       dim[1],
-       dim[2],
-       tmpDens,
-       tmpCoord),
-     PACKAGE = "cart")
+  invisible(.C("main",
+               as.integer(5),
+               c("cart",
+                 dim[1],
+                 dim[2],
+                 tmpDens,
+                 tmpCoord),
+               PACKAGE = "cart"))
 
   ## remove the first temporary file
   file.remove(tmpDens)
@@ -132,8 +153,8 @@ cartogram <- function(spdf,
                        byrow = FALSE, ncol = 2)
       ## interpolate
       coordsTr <- interpolate(coords,
-                              matrix(coordsGrid[, 1], byrow = FALSE, ncol = dim[1] + 1),
-                              matrix(coordsGrid[, 2], byrow = FALSE, ncol = dim[2] + 1))
+                              matrix(coordsGrid[, 1], byrow = TRUE, ncol = dim["x"] + 1),
+                              matrix(coordsGrid[, 2], byrow = TRUE, ncol = dim["x"] + 1))
       PolygonList[[j]] <- Polygon(coordsTr, hole = FALSE)
     }
     ID <- spdf@polygons[[i]]@ID
@@ -142,7 +163,7 @@ cartogram <- function(spdf,
   
   ## assemble object
   sp <- SpatialPolygons(PolygonsList, proj4string = spdf@proj4string)
-
+  
   ## clean up
   file.remove(tmpCoord)
   
@@ -173,6 +194,8 @@ interpolate <- function(xy, xgrid, ygrid) {
   ## adapted from Mark Newman's code in interp.c
 
   ## TODO: check input
+  ## TODO: document x/y and R's dim(nrow, ncol) coordinate system
+  ##       and possible confusion that may arise from differences
 
   ## x/y vectors
   x <- xy[, 1]
@@ -191,10 +214,15 @@ interpolate <- function(xy, xgrid, ygrid) {
   dy <- y - iy
 
   ## bilinear interpolation
-  mat <- cbind((1 - dx) * (1 - dy) * xgrid[cbind(ix, iy)] + dx * (1 - dy) * xgrid[cbind(ix + 1, iy)] +
-               (1 - dx) * dy * xgrid[cbind(ix, iy + 1)] + dx * dy * xgrid[cbind(ix + 1, iy + 1)],
-               (1 - dx) * (1 - dy) * ygrid[cbind(ix, iy)] + dx * (1 - dy) * ygrid[cbind(ix + 1, iy)] +
-               (1 - dx) * dy * ygrid[cbind(ix, iy + 1)] + dx * dy * ygrid[cbind(ix + 1, iy + 1)])
+  ## (not that matrix indexing works differently than in C)
+  ## mat <- cbind((1 - dx) * (1 - dy) * xgrid[cbind(iy, ix)] + dx * (1 - dy) * xgrid[cbind(iy + 1, ix)] +
+  ##              (1 - dx) * dy * xgrid[cbind(iy, ix + 1)] + dx * dy * xgrid[cbind(iy + 1, ix + 1)],
+  ##              (1 - dx) * (1 - dy) * ygrid[cbind(iy, ix)] + dx * (1 - dy) * ygrid[cbind(iy + 1, ix)] +
+  ##              (1 - dx) * dy * ygrid[cbind(iy, ix + 1)] + dx * dy * ygrid[cbind(iy + 1, ix + 1)])
+  mat <- cbind((1 - dy) * (1 - dx) * xgrid[cbind(iy, ix)] + dy * (1 - dx) * xgrid[cbind(iy + 1, ix)] +
+               (1 - dy) * dx * xgrid[cbind(iy, ix + 1)] + dy * dx * xgrid[cbind(iy + 1, ix + 1)],
+               (1 - dy) * (1 - dx) * ygrid[cbind(iy, ix)] + dy * (1 - dx) * ygrid[cbind(iy + 1, ix)] +
+               (1 - dy) * dx * ygrid[cbind(iy, ix + 1)] + dy * dx * ygrid[cbind(iy + 1, ix + 1)])
 
   ## if points are outside the grid, return them untransformed
   untransformed <- which(x < 0 | x >= xsize | y < 0 | y > ysize)
