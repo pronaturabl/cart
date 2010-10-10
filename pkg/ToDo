@@ -1,2 +1,4 @@
 * use bibtex roclet (@references\n@bibliography\n@cite foo)
 * create file CITATION in inst/doc/
+* add example from www.worldmapper.org (e.g. with download of data)
+* check package rworldmap for use with examples
