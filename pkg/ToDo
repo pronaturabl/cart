@@ -2,3 +2,5 @@
 * create file CITATION in inst/doc/
 * add example from www.worldmapper.org (e.g. with download of data)
 * check package rworldmap for use with examples
+
+* consider insertion of R_CheckUserInterrupt into Newman's C code (dhb)

@@ -6,6 +6,12 @@
 ##' \code{\link[sp]{SpatialPolygonsDataFrame}} object using
 ##' the indicated data.frame variable.
 ##'
+##' Warning: function deprecated and overridden by S4 generic method
+##' of cartogram(x=SpatialPolygonsDataFrame,cart=missing)
+##'
+##' This file/code retained (for now) for reference as the S4 methods still
+##' need a bit of streamlining/refactoring
+##'  
 ##' @author Thomas Zumbrunn \email{thomas@@zumbrunn.name}
 ##' @param spdf \code{\link[sp]{SpatialPolygonsDataFrame}} object for which
 ##' to create a cartogram

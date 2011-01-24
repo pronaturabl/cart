@@ -1,2 +1,3 @@
 useDynLib(cart)
 export(cartogram)
+importFrom("graphics", "plot")
