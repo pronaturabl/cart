@@ -1,0 +1,54 @@
+\name{cartogram}
+\alias{cartogram}
+\title{Creates a cartogram.}
+\usage{
+  cartogram(spdf, variable = 1, nrows = 2^8, ncols = 2^8)
+}
+\arguments{
+  \item{spdf}{\code{\link[sp]{SpatialPolygonsDataFrame}}
+  object for which to create a cartogram}
+
+  \item{variable}{numeric or character indicating the
+  data.frame column in 'spdf' which to use for the density
+  calculations}
+
+  \item{nrows}{numeric, number of rows of the sampling
+  grid}
+
+  \item{ncols}{numeric, number of columns of the sampling
+  grid}
+}
+\value{
+  SpatialPolygonsDataFrame object
+}
+\description{
+  This function creates a cartogram from a
+  \code{\link[sp]{SpatialPolygonsDataFrame}} object using
+  the indicated data.frame variable.
+}
+\details{
+  Warning: function deprecated and overridden by S4 generic
+  method of
+  cartogram(x=SpatialPolygonsDataFrame,cart=missing)
+
+  This file/code retained (for now) for reference as the S4
+  methods still need a bit of streamlining/refactoring
+}
+\examples{
+data(usapop)
+usmap <- map("state", fill = TRUE, plot = FALSE)
+sp <- map2SpatialPolygons(usmap, sub(":.*", "", usmap$names))
+rownames(usapop) <- tolower(rownames(usapop))
+spdf <- SpatialPolygonsDataFrame(sp, usapop, match.ID = TRUE)
+cart <- cartogram(spdf, "population")
+plot(cart, axes = TRUE, asp = 1/2, col = "#147f14")
+}
+\author{
+  Thomas Zumbrunn \email{thomas@zumbrunn.name}
+}
+\references{
+  Gastner MT, Newman MEJ (2004) Diffusion-based method for
+  producing density equalizing maps. Proc. Natl. Acad. Sci.
+  101:7499-7504
+}
+

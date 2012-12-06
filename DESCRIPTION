@@ -1,0 +1,32 @@
+Package: cart
+Type: Package
+Title: Diffusion-based cartograms
+Version: 0.3.0
+Date: ????-??-??
+Author: Thomas Zumbrunn <thomas@zumbrunn.name>
+Maintainer: Thomas Zumbrunn <thomas@zumbrunn.name>
+Authors@R: c(person("Thomas", "Zumbrunn", role = c("aut", "cre"),
+    email = "thomas@zumbrunn.name"))
+Description: Produce density-equalising maps or "cartograms" based on the
+    diffusion-based method by Michael T. Gastner and Mark E. J. Newman and an
+    implementation by Mark E. J. Newman
+    (http://people.cas.sc.edu/hardistf/cartograms/).
+Depends:
+    R (>= 2.15.0)
+Imports:
+    maps,
+    maptools,
+    sp
+Suggests:
+    mapdata,
+    methods,
+    graphics
+SystemRequirements: fftw3 (http://www.fftw.org)
+License: GPL (>= 3)
+URL: https://github.com/thomaszumbrunn/cart/
+BugReports: https://github.com/thomaszumbrunn/cart/issues
+LazyLoad: yes
+LazyData: yes
+Encoding: UTF-8
+Collate:
+    'cart.R'

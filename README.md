@@ -24,4 +24,15 @@ and on openSUSE with
 
     zypper install fftw3-devel
 
+## Installation
+
+If you want to install the R package tarball and get an error message such as
+
+    Error in untar2(tarfile, files, list, exdir) : unsupported entry type ‘x’
+
+this means the R internal function `untar2` fails. In this case, set the
+environment variable `R_INSTALL_TAR` to a system `tar` utility, e.g., on
+GNU/Linux, do
+
+    export R_INSTALL_TAR="tar"
 

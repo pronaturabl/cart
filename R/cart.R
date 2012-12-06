@@ -24,7 +24,6 @@
 ##' producing density equalizing maps. Proc. Natl. Acad. Sci. 101:7499-7504
 ##' @useDynLib cart
 ##' @export cartogram
-##' @callGraph
 ##' @examples
 ##' data(usapop)
 ##' usmap <- map("state", fill = TRUE, plot = FALSE)
@@ -195,7 +194,6 @@ cartogram <- function(spdf,
 ##' @param xgrid numeric matrix of x grid coordinates
 ##' @param ygrid numeric matrix of y grid coordinates
 ##' @return matrix of x/y transformed coordinates
-##' @nord
 
 
 interpolate <- function(xy, xgrid, ygrid) {

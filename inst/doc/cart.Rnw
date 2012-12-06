@@ -2,6 +2,7 @@
 
 % \VignetteIndexEntry{Introduction to cart}
 
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
 \usepackage{color}
@@ -9,8 +10,8 @@
 
 \title{Introduction to {\tt cart}: diffusion-based density-equalising maps or
   ``cartograms''}
-\author{Thomas Zumbrunn\footnote{University of Basel, Institute of Botany,
-    Schönbeinstrasse 6, 4056 Basel, Switzerland {\tt thomas@zumbrunn.name}}}
+\author{Thomas Zumbrunn\footnote{Clinical Trial Unit, University Hospital Basel,
+    Schanzenstrasse 55, 4031 Basel, Switzerland {\tt thomas@zumbrunn.name}}}
 
 \begin{document}
 
