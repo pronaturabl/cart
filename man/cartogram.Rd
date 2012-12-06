@@ -35,7 +35,10 @@
   methods still need a bit of streamlining/refactoring
 }
 \examples{
+library(maptools)
+library(sp)
 data(usapop)
+usapop <- usapop[-c(2, 12, 45), , drop = FALSE]
 usmap <- map("state", fill = TRUE, plot = FALSE)
 sp <- map2SpatialPolygons(usmap, sub(":.*", "", usmap$names))
 rownames(usapop) <- tolower(rownames(usapop))
