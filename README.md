@@ -9,13 +9,19 @@ diffusion-based method by Michael T. Gastner and Mark E. J. Newman.
 
 [`Cart`](http://www-personal.umich.edu/~mejn/cart/), the cartogram software by
 Michael T. Gastner and Mark E. J. Newman, consists of a couple of C source code
-files that are shipped with the R package. `Cart` depends on the
-[`FFTW`](http://www.fftw.org/) C library, which can be installed with
+files that are shipped with the R
+package. [`Cart`](http://www-personal.umich.edu/~mejn/cart/)
+depends on the [`FFTW`](http://www.fftw.org/) C library, which can be
+installed on Debian with
 
     apt-get install libfftw3-dev
 
-on Debian and with
+on Fedora with
 
-    zypper in fftw3-devel
+    yum install fftw3-devel
 
-on openSUSE.
+and on openSUSE with
+
+    zypper install fftw3-devel
+
+
