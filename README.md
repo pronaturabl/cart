@@ -44,3 +44,7 @@ GNU/Linux, do
 
     export R_INSTALL_TAR="tar"
 
+## Versioning
+
+Starting with version 0.4.0 I will try to follow the [`semantic
+versioning`](http://semantic.org/) rules.
