@@ -35,6 +35,7 @@
   methods still need a bit of streamlining/refactoring
 }
 \examples{
+library(maps)
 library(maptools)
 library(sp)
 data(usapop)

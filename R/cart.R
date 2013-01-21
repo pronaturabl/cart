@@ -25,6 +25,7 @@
 ##' @useDynLib cart
 ##' @export cartogram
 ##' @examples
+##' library(maps)
 ##' library(maptools)
 ##' library(sp)
 ##' data(usapop)
