@@ -26,6 +26,14 @@ and on openSUSE with
 
 ## Installation
 
+After checking out a copy of the source code, build the R package tarball with:
+
+    R CMD build cart/
+
+Then, install it with:
+
+    R CMD INSTALL cart_x.y.z.tar.gz
+
 If you want to install the R package tarball and get an error message such as
 
     Error in untar2(tarfile, files, list, exdir) : unsupported entry type ‘x’
