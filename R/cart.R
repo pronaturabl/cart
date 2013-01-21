@@ -1,16 +1,14 @@
-
-
 ##' Creates a cartogram.
 ##'
 ##' This function creates a cartogram from a
 ##' \code{\link[sp]{SpatialPolygonsDataFrame}} object using
 ##' the indicated data.frame variable.
 ##'
-##' Warning: function deprecated and overridden by S4 generic method
-##' of cartogram(x=SpatialPolygonsDataFrame,cart=missing)
-##'
-##' This file/code retained (for now) for reference as the S4 methods still
-##' need a bit of streamlining/refactoring
+##  Warning: function deprecated and overridden by S4 generic method
+##  of cartogram(x=SpatialPolygonsDataFrame,cart=missing)
+##
+##  This file/code retained (for now) for reference as the S4 methods still
+##  need a bit of streamlining/refactoring
 ##'  
 ##' @author Thomas Zumbrunn \email{thomas@@zumbrunn.name}
 ##' @param spdf \code{\link[sp]{SpatialPolygonsDataFrame}} object for which
@@ -36,7 +34,6 @@
 ##' spdf <- SpatialPolygonsDataFrame(sp, usapop, match.ID = TRUE)
 ##' cart <- cartogram(spdf, "population")
 ##' plot(cart, axes = TRUE, asp = 1/2, col = "#147f14")
-
 cartogram <- function(spdf,
                       variable = 1,
                       nrows = 2^8,
@@ -85,7 +82,7 @@ cartogram <- function(spdf,
   ## create a grid
 
   ## The algorithm by Newman works best if there is a generous "sea" around
-  ## the "land", thus By default, add 50% of the x/y ranges to each side and
+  ## the "land", thus by default, add 50% of the x/y ranges to each side and
   ## define a grid of 512x512 points. Because the C code of Mark Newman uses
   ## FFTW, the number of grid points should be a power of two in order for FFTW
   ## to work faster.
@@ -190,7 +187,7 @@ cartogram <- function(spdf,
 ##' Performs bilinear interpolation.
 ##'
 ##' This function performs bilinear interpolation of pairs of x/y
-##' coordinates based on a matrix of x gridcoordinates and a matrix of y
+##' coordinates based on a matrix of x grid coordinates and a matrix of y
 ##' grid coordinates. The algorithm is based on C code by Mark Newman.
 ##'
 ##' @author Thomas Zumbrunn \email{thomas@@zumbrunn.name}
@@ -198,8 +195,6 @@ cartogram <- function(spdf,
 ##' @param xgrid numeric matrix of x grid coordinates
 ##' @param ygrid numeric matrix of y grid coordinates
 ##' @return matrix of x/y transformed coordinates
-
-
 interpolate <- function(xy, xgrid, ygrid) {
 
   ## adapted from Mark Newman's code in interp.c
@@ -225,7 +220,7 @@ interpolate <- function(xy, xgrid, ygrid) {
   dy <- y - iy
 
   ## bilinear interpolation
-  ## (not that matrix indexing works differently than in C)
+  ## (note that matrix indexing works differently in R than in C)
   ## mat <- cbind((1 - dx) * (1 - dy) * xgrid[cbind(iy, ix)] + dx * (1 - dy) * xgrid[cbind(iy + 1, ix)] +
   ##              (1 - dx) * dy * xgrid[cbind(iy, ix + 1)] + dx * dy * xgrid[cbind(iy + 1, ix + 1)],
   ##              (1 - dx) * (1 - dy) * ygrid[cbind(iy, ix)] + dx * (1 - dy) * ygrid[cbind(iy + 1, ix)] +
@@ -247,7 +242,7 @@ interpolate <- function(xy, xgrid, ygrid) {
 
 
 
-##'  Population data of the USA.
+##' Population data of the USA.
 ##'
 ##' @name usapop
 ##' @docType data
