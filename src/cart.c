@@ -469,29 +469,14 @@ void cart_twosteps(double *pointx, double *pointy, int npoints,
 }
 
 
-/* Function to estimate the percentage completion */
-
-int cart_complete(double t)
-{
-  int res;
-
-  res = 100*log(t/INITH)/log(EXPECTEDTIME/INITH);
-  if (res>100) res = 100;
-
-  return res;
-}
-
-
 /* Function to do the transformation of the given set of points
  * to the cartogram */
 
 void cart_makecart(double *pointx, double *pointy, int npoints,
 		   int xsize, int ysize, double blur)
 {
-  int i;
   int s,sp;
   int step;
-  int done;
   double t,h;
   double error,dr;
   double desiredratio;
@@ -527,25 +512,8 @@ void cart_makecart(double *pointx, double *pointy, int npoints,
     if (desiredratio>MAXRATIO) h *= MAXRATIO;
     else h *= desiredratio;
 
-    done = cart_complete(t);
-#ifdef PERCENT
-    fprintf(stdout,"%i\n",done);
-#endif
-#ifndef NOPROGRESS
-    fprintf(stderr,"  %3i%%  |",done);
-    for (i=0; i<done/2; i++) fprintf(stderr,"=");
-    for (i=done/2; i<50; i++) fprintf(stderr," ");
-    fprintf(stderr,"|\r");
-#endif
-
     /* If no point moved then we are finished */
 
   } while (dr>0.0);
 
-#ifdef PERCENT
-  fprintf(stdout,"\n");
-#endif
-#ifndef NOPROGRESS
-  fprintf(stderr,"  100%%  |==================================================|\n");
-#endif
 }
