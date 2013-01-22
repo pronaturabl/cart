@@ -46,5 +46,5 @@ GNU/Linux, do
 
 ## Versioning
 
-Starting with version 0.4.0 I will try to follow the [`semantic
+Starting with version 0.3.0 I will try to follow the [`semantic
 versioning`](http://semantic.org/) rules.

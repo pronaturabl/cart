@@ -177,7 +177,7 @@ cartogram <- function(spdf,
   file.remove(tmpCoord)
   
 
-  ## return the newly created SpatialPolygons object
+  ## return the newly created SpatialPolygonsDataFrame object
   return(sp)
   
 }
