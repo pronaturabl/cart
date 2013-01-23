@@ -14,9 +14,10 @@ Description: Produce density-equalising maps or "cartograms" based on the
 Depends:
     R (>= 2.15.0)
 Imports:
-    maps,
-    maptools,
-    sp
+    maps (>= 2.2-5),
+    maptools (>= 0.8-14),
+    rdyncall (>= 0.7.5),
+    sp (>= 1.0-5)
 Suggests:
     mapdata,
     methods,
