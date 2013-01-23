@@ -6,7 +6,7 @@ Date: ????-??-??
 Author: Thomas Zumbrunn <thomas@zumbrunn.name>
 Maintainer: Thomas Zumbrunn <thomas@zumbrunn.name>
 Authors@R: c(person("Thomas", "Zumbrunn", role = c("aut", "cre"),
-    email = "thomas@zumbrunn.name"))
+    email = "thomas@zumbrunn.name"), person("David H.", "Brown", role = c("ctb")))
 Description: Produce density-equalising maps or "cartograms" based on the
     diffusion-based method by Michael T. Gastner and Mark E. J. Newman and an
     implementation by Mark E. J. Newman
