@@ -28,7 +28,7 @@
 /* Function to read population data into the array rho.  Returns 1 if there
  * was a problem, zero otherwise */
 
-int my_readpop(double *dens, double **rho, int xsize, int ysize)
+int embed_readpop(double *dens, double **rho, int xsize, int ysize)
 {
   int ix,iy;
   double mean;
@@ -54,7 +54,7 @@ int my_readpop(double *dens, double **rho, int xsize, int ysize)
 
 /* Function to make the grid of points */
 
-void my_creategrid(double *gridx, double *gridy, int xsize, int ysize)
+void embed_creategrid(double *gridx, double *gridy, int xsize, int ysize)
 {
   int ix,iy;
   int i;
@@ -69,7 +69,7 @@ void my_creategrid(double *gridx, double *gridy, int xsize, int ysize)
 }
 
 
-void my_main(int xsize, int ysize, double *dens, double *gridx, double *gridy)
+void embed_main(int xsize, int ysize, double *dens, double *gridx, double *gridy)
 {
 
   double **rho;          // Initial population density

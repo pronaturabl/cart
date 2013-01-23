@@ -126,7 +126,7 @@ cartogram <- function(spdf,
   gridx <- double((dim["x"] + 1) * (dim["y"] + 1))
   gridy <- double((dim["x"] + 1) * (dim["y"] + 1))
   rdyncall::dynbind(system.file(file.path("libs", paste("cart", .Platform$dynlib.ext, sep = "")), package = "cart"),
-                    "my_main(ii*d*d*d)v;")
+                    "embed_main(ii*d*d*d)v;")
   my_main(dim["x"], dim["y"], as.double(t(dens[rev(seq(along = dens[, 1])), ])), gridx, gridy)
   coordsGrid <- cbind(gridx, gridy)
 
