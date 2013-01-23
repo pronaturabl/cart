@@ -81,13 +81,13 @@ void embed_main(int xsize, int ysize, double *dens, double *gridx, double *gridy
   /* Read in the population data, transform it, then destroy it again */
 
   rho = cart_dmalloc(xsize,ysize);
-  my_readpop(dens, rho, xsize, ysize);
+  embed_readpop(dens, rho, xsize, ysize);
   cart_transform(rho,xsize,ysize);
   cart_dfree(rho);
 
   /* Create the grid of points */
 
-  my_creategrid(gridx,gridy,xsize,ysize);
+  embed_creategrid(gridx,gridy,xsize,ysize);
 
   /* Make the cartogram */
 
