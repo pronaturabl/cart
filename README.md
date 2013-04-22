@@ -26,7 +26,11 @@ and on openSUSE with
 
 ## Installation
 
-After checking out a copy of the source code, build the R package tarball with:
+First, install the R packages that cart depends on:
+
+    Rscript -e "install.packages(c('maps', 'maptools', 'rdyncall', 'sp'))"
+
+After checking out a copy of the cart source code, build the R package tarball with:
 
     R CMD build cart/
 
@@ -46,5 +50,5 @@ GNU/Linux, do
 
 ## Versioning
 
-Starting with version 0.3.0 I will try to follow the [`semantic
+Starting with version 0.3.0 I try to follow the [`semantic
 versioning`](http://semantic.org/) rules.

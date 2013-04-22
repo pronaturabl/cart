@@ -21,7 +21,7 @@
 ##' @references Gastner MT, Newman MEJ (2004) Diffusion-based method for
 ##' producing density equalizing maps. Proc. Natl. Acad. Sci. 101:7499-7504
 ##' @useDynLib cart
-##' @importFrom rdyncall dynbind
+##' @importFrom rdyncall dynbind .dyncall.default
 ##' @export cartogram
 ##' @examples
 ##' library(maps)
@@ -100,7 +100,8 @@ cartogram <- function(spdf,
 
   ## This is an extension of the point-in-polygon problem. We obtain a vector of
   ## indices of the polygons in spdf.
-  ind <- overlay(grid, spdf)
+  ## FIXME: function 'overlay' is deprecated, use 'over' instead and adapt code.
+  ind <- sp::overlay(grid, spdf)
 
 
   ## calculate "density"
@@ -127,7 +128,7 @@ cartogram <- function(spdf,
   gridy <- double((dim["x"] + 1) * (dim["y"] + 1))
   rdyncall::dynbind(system.file(file.path("libs", paste("cart", .Platform$dynlib.ext, sep = "")), package = "cart"),
                     "embed_main(ii*d*d*d)v;")
-  my_main(dim["x"], dim["y"], as.double(t(dens[rev(seq(along = dens[, 1])), ])), gridx, gridy)
+  embed_main(dim["x"], dim["y"], as.double(t(dens[rev(seq(along = dens[, 1])), ])), gridx, gridy)
   coordsGrid <- cbind(gridx, gridy)
 
   ## produce the cartogram by interpolation

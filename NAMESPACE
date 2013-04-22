@@ -1,2 +1,4 @@
 export(cartogram)
+importFrom(rdyncall,dynbind)
+importFrom(rdyncall,.dyncall.default)
 useDynLib(cart)

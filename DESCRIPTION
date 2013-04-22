@@ -1,8 +1,8 @@
 Package: cart
 Type: Package
 Title: Diffusion-based cartograms
-Version: 0.3.0
-Date: ????-??-??
+Version: 0.3.1
+Date: 2013-04-22
 Author: Thomas Zumbrunn <thomas@zumbrunn.name>
 Maintainer: Thomas Zumbrunn <thomas@zumbrunn.name>
 Authors@R: c(person("Thomas", "Zumbrunn", role = c("aut", "cre"),
