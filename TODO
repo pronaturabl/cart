@@ -1,6 +1,9 @@
-* use bibtex roclet (@references\n@bibliography\n@cite foo)
-* create file CITATION in inst/doc/
-* add example from www.worldmapper.org (e.g. with download of data)
-* check package rworldmap for use with examples
+TODO
 
-* consider insertion of R_CheckUserInterrupt into Newman's C code (dhb)
+* add example for www.worldmapper.org (e.g., with download of data), or write
+  functions to handle worldmapper data directly
+* check package "rworldmap"
+* consider insertion of R_CheckUserInterrupt into Newman's C code (D. Brown)
+* answer question at
+  http://stackoverflow.com/questions/9319597/cartogram-choropleth-map-in-r if
+  package is mature enough
