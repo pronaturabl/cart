@@ -9,7 +9,7 @@
 ##
 ##  This file/code retained (for now) for reference as the S4 methods still
 ##  need a bit of streamlining/refactoring
-##'  
+##'
 ##' @author Thomas Zumbrunn \email{thomas@@zumbrunn.name}
 ##' @param spdf \code{\link[sp]{SpatialPolygonsDataFrame}} object for which
 ##' to create a cartogram
@@ -40,14 +40,13 @@ cartogram <- function(spdf,
                       nrows = 2^8,
                       ncols = 2^8) {
 
-
   ## check arguments
-  
+
   ## spdf
   ## - must have class SpatialPolygonsDataFrame
   if (!class(spdf) == "SpatialPolygonsDataFrame")
     stop("argument 'spdf' must be an object of class 'SpatialPolygonsDataFrame'")
-  
+
   ## variable
   ## - must have length 1
   if (length(variable) != 1)
@@ -77,9 +76,9 @@ cartogram <- function(spdf,
   if (!isTRUE(all.equal(log(nrows, 2), floor(log(nrows, 2)))))
     warning("argument 'nrows' should be a power of 2 for faster calculation")
   if (!isTRUE(all.equal(log(ncols, 2), floor(log(ncols, 2)))))
-    warning("argument 'nrows' should be a power of 2 for faster calculation")  
+    warning("argument 'nrows' should be a power of 2 for faster calculation")
 
-  
+
   ## create a grid
 
   ## The algorithm by Newman works best if there is a generous "sea" around
@@ -89,13 +88,14 @@ cartogram <- function(spdf,
   ## to work faster.
   bb <- bbox(spdf)
   range <- diff(t(bbox(spdf)))
-  shift <- 0.5 * range
+  shift <- 0.5 * range  ## FIXME: If one wants to interpolate a coordinate that lies outside
+                        ##        this region, function "interpolate" will fail!
   dim <- c(x = ncols, y = nrows)
   grid <- SpatialGrid(GridTopology(cellcentre.offset = as.numeric(bb[, "min"] - shift),
                                    cellsize = as.numeric(diff(t(bb + t(rbind(-shift, shift)))) / (dim - 1)),
                                    cells.dim = dim))
 
-  
+
   ## overlay grid and polygons
 
   ## This is an extension of the point-in-polygon problem. We obtain a vector of
@@ -120,7 +120,7 @@ cartogram <- function(spdf,
   ind[is.na(ind)] <- length(var) + 1
   indVar[length(var) + 1] <- mean
   dens <- matrix(indVar[ind], byrow = TRUE, ncol = dim["x"])
-  
+
   ## calculate the cartogram coordinates
 
   ## call the modified standalone application
@@ -132,7 +132,7 @@ cartogram <- function(spdf,
   coordsGrid <- cbind(gridx, gridy)
 
   ## produce the cartogram by interpolation
-  
+
   ## loop over all polygons
   PolygonsList <- list()
   for (i in seq(along = spdf@polygons)) {
@@ -153,14 +153,13 @@ cartogram <- function(spdf,
     ID <- spdf@polygons[[i]]@ID
     PolygonsList[[i]] <- Polygons(PolygonList, ID)
   }
-  
+
   ## assemble object
   sp <- SpatialPolygons(PolygonsList, proj4string = spdf@proj4string)
-  
 
-  ## return the newly created SpatialPolygonsDataFrame object
+  ## return the newly created SpatialPolygons object
   return(sp)
-  
+
 }
 
 
@@ -187,7 +186,7 @@ interpolate <- function(xy, xgrid, ygrid) {
   ## x/y vectors
   x <- xy[, 1]
   y <- xy[, 2]
-  
+
   ## range
   xsize <- max(xgrid)
   ysize <- max(ygrid)
@@ -218,7 +217,7 @@ interpolate <- function(xy, xgrid, ygrid) {
 
   ## return the matrix
   return(mat)
-  
+
 }
 
 
