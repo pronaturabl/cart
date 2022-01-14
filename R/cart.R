@@ -4,12 +4,6 @@
 ##' \code{\link[sp]{SpatialPolygonsDataFrame}} object using
 ##' the indicated data.frame variable.
 ##'
-##  Warning: function deprecated and overridden by S4 generic method
-##  of cartogram(x=SpatialPolygonsDataFrame,cart=missing)
-##
-##  This file/code retained (for now) for reference as the S4 methods still
-##  need a bit of streamlining/refactoring
-##'
 ##' @author Thomas Zumbrunn \email{thomas@@zumbrunn.name}
 ##' @param spdf \code{\link[sp]{SpatialPolygonsDataFrame}} object for which
 ##' to create a cartogram
@@ -20,15 +14,14 @@
 ##' @return SpatialPolygonsDataFrame object
 ##' @references Gastner MT, Newman MEJ (2004) Diffusion-based method for
 ##' producing density equalizing maps. Proc. Natl. Acad. Sci. 101:7499-7504
-##' @useDynLib cart
-##' @importFrom rdyncall dynbind .dyncall.default
+#' @useDynLib cart
 ##' @export cartogram
 ##' @examples
 ##' library(maps)
 ##' library(maptools)
 ##' library(sp)
 ##' data(usapop)
-##' usapop <- usapop[-c(2, 12, 45), , drop = FALSE]
+#' usapop <- usapop[-c(2, 12, 45), , drop = FALSE]
 ##' usmap <- map("state", fill = TRUE, plot = FALSE)
 ##' sp <- map2SpatialPolygons(usmap, sub(":.*", "", usmap$names))
 ##' rownames(usapop) <- tolower(rownames(usapop))
@@ -100,8 +93,9 @@ cartogram <- function(spdf,
 
   ## This is an extension of the point-in-polygon problem. We obtain a vector of
   ## indices of the polygons in spdf.
-  ## FIXME: function 'overlay' is deprecated, use 'over' instead and adapt code.
-  ind <- sp::overlay(grid, spdf)
+  proj4string(grid) <- proj4string(spdf)
+  ind <- sp::over(grid, polygons(spdf))
+
 
 
   ## calculate "density"
@@ -123,18 +117,32 @@ cartogram <- function(spdf,
 
   ## calculate the cartogram coordinates
 
-  ## call the modified standalone application
-  gridx <- double((dim["x"] + 1) * (dim["y"] + 1))
-  gridy <- double((dim["x"] + 1) * (dim["y"] + 1))
-  rdyncall::dynbind(system.file(file.path("libs", paste("cart", .Platform$dynlib.ext, sep = "")), package = "cart"),
-                    "embed_main(ii*d*d*d)v;")
-  embed_main(dim["x"], dim["y"], as.double(t(dens[rev(seq(along = dens[, 1])), ])), gridx, gridy)
-  coordsGrid <- cbind(gridx, gridy)
+  ## create two temporary files
+  tmpDens <- tempfile("cart")
+  tmpCoord <- tempfile("cart")
+
+  ## write the density matrix to the temporary file
+  ## (use the format expected by the standalone cart application, which
+  ## includes that the rows are reverted)
+  write.table(dens[rev(seq(along = dens[, 1])), ],
+              file = tmpDens, sep = " ",
+              row.names = FALSE, col.names = FALSE)
+
+  ## call the cart application
+  invisible(.C("main",
+               as.integer(5),
+               c("cart",
+                 dim["x"],
+                 dim["y"],
+                 tmpDens,
+                 tmpCoord),
+               PACKAGE = "cart"))
 
   ## produce the cartogram by interpolation
 
   ## loop over all polygons
   PolygonsList <- list()
+  coordsGrid <- utils::read.table(tmpCoord, sep = " ")  
   for (i in seq(along = spdf@polygons)) {
     PolygonList <- list()
     for (j in seq(along = spdf@polygons[[i]]@Polygons)) {
@@ -157,6 +165,9 @@ cartogram <- function(spdf,
   ## assemble object
   sp <- SpatialPolygons(PolygonsList, proj4string = spdf@proj4string)
 
+  ## clean up
+  file.remove(tmpCoord)
+  
   ## return the newly created SpatialPolygons object
   return(sp)
 

@@ -1,1 +1,1 @@
-usapop <- read.table("usapop.txt", header = TRUE, sep = "\t", row.names = 1)
+usapop <- utils::read.table("usapop.txt", header = TRUE, sep = "\t", row.names = 1)
