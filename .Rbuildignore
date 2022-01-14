@@ -1,2 +1,4 @@
 pkg
 www
+^.*\.Rproj$
+^\.Rproj\.user$
